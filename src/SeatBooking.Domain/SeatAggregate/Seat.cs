@@ -6,18 +6,20 @@ namespace SeatBooking.Domain.SeatAggregate;
 public readonly record struct SeatId(Guid Value);
 public class Seat : EntityBase<SeatId>
 {
+    public int Number { get; private set; }
     public SeatStatus Status { get; private set; }
-    public byte[] RowVersion { get; set; }
+    public byte[] RowVersion { get; private set; }
 
 #pragma warning disable CS8618
     private Seat() { }
 #pragma warning restore CS8618
 
-    public static Seat Create()
+    public static Seat Create(int seatNumber)
     {
         return new Seat
         {
             Id = new SeatId(Guid.NewGuid()),
+            Number = seatNumber,
             Status = SeatStatus.Available
         };
     }

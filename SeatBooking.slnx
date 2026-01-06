@@ -1,5 +1,6 @@
 <Solution>
   <Folder Name="/1. App/">
+    <Project Path="src/SeatBooking.API/SeatBooking.API.csproj" Id="15cc09a3-68d3-4211-92c5-882cd838ecda" />
     <Project Path="src/SeatBooking.Application/SeatBooking.Application.csproj" Id="7fdee853-9f0e-4cd4-a43a-0c150f7fc49e" />
     <Project Path="src/SeatBooking.Domain/SeatBooking.Domain.csproj" Id="1cc3513e-3bad-4284-a8da-9fc001870a92" />
     <Project Path="src/SeatBooking.Infrastructure/SeatBooking.Infrastructure.csproj" Id="65cc3abd-7a2e-4ec3-b791-5ae2640b9c0f" />

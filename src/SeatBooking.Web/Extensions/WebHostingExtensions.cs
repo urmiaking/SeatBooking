@@ -1,4 +1,5 @@
-﻿using SeatBooking.Application.Extensions;
+﻿using SeatBooking.API.Extensions;
+using SeatBooking.Application.Extensions;
 using SeatBooking.Infrastructure.Extensions;
 
 namespace SeatBooking.Web.Extensions;
@@ -11,6 +12,7 @@ public static class WebHostingExtensions
 
         builder.Services
             .AddServer(configuration)
+            .AddApis()
             .AddApplication()
             .AddInfrastructure(configuration);
 

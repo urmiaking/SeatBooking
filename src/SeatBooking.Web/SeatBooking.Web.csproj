@@ -7,7 +7,6 @@
 	</PropertyGroup>
 
 	<ItemGroup>
-		<PackageReference Include="Swashbuckle.AspNetCore" Version="10.1.0" />
 		<PackageReference Include="Microsoft.AspNetCore.Diagnostics.EntityFrameworkCore" Version="10.0.1" />
 	</ItemGroup>
 
@@ -23,6 +22,7 @@
 	</ItemGroup>
 
 	<ItemGroup>
+		<ProjectReference Include="..\SeatBooking.API\SeatBooking.API.csproj" />
 		<ProjectReference Include="..\SeatBooking.Application\SeatBooking.Application.csproj" />
 	</ItemGroup>
 

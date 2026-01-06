@@ -27,6 +27,8 @@ public static class WebApplicationExtensions
             app.MapStaticAssets();
             app.MapRazorPages()
                 .WithStaticAssets();
+
+            app.MapControllers();
         }
 
         internal void ApplyDatabaseMigrations<TContext>()

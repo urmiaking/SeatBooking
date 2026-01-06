@@ -22,6 +22,9 @@ internal sealed class SeatConfiguration : IEntityTypeConfiguration<Seat>
             .IsRowVersion()
             .IsConcurrencyToken();
 
+        builder.HasIndex(x => x.Number)
+            .IsUnique();
+
         builder.HasIndex(x => x.Status);
     }
 }
