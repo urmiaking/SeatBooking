@@ -14,4 +14,10 @@
     <PackageReference Include="Mapster.DependencyInjection" Version="1.0.1" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="DTOs\Reservations\" />
+    <Folder Include="DTOs\Seats\" />
+    <Folder Include="Services\" />
+  </ItemGroup>
+
 </Project>

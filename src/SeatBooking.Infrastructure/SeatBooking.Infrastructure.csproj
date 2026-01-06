@@ -14,8 +14,4 @@
     <ProjectReference Include="..\SeatBooking.Domain\SeatBooking.Domain.csproj" />
   </ItemGroup>
 
-  <ItemGroup>
-    <Folder Include="Repositories\" />
-  </ItemGroup>
-
 </Project>

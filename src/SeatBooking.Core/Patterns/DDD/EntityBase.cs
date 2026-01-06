@@ -1,4 +1,4 @@
-﻿namespace SeatBooking.Domain.Common;
+﻿namespace SeatBooking.Core.Patterns.DDD;
 
 public abstract class EntityBase;
 

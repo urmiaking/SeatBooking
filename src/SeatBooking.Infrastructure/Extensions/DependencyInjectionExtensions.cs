@@ -1,5 +1,6 @@
 ﻿using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
+using SeatBooking.Core.DependencyInjections.Extensions;
 
 namespace SeatBooking.Infrastructure.Extensions;
 
@@ -10,6 +11,8 @@ public static class DependencyInjectionExtensions
         public IServiceCollection AddInfrastructure(IConfiguration configuration)
         {
             services.AddStorage(configuration);
+            services.DiscoverServices();
+
             return services;
         }
 

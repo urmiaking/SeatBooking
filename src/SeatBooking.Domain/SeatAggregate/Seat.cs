@@ -1,5 +1,5 @@
 ﻿using SeatBooking.Core.Exceptions;
-using SeatBooking.Domain.Common;
+using SeatBooking.Core.Patterns.DDD;
 
 namespace SeatBooking.Domain.SeatAggregate;
 
