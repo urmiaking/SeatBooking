@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using SeatBooking.API.Hubs;
 using SeatBooking.Application.Abstractions;
 
 namespace SeatBooking.Web.Extensions;
@@ -29,6 +30,8 @@ public static class WebApplicationExtensions
                 .WithStaticAssets();
 
             app.MapControllers();
+
+            app.MapHub<SeatBookingHub>("/hubs/seat-booking");
         }
 
         internal void ApplyDatabaseMigrations<TContext>()

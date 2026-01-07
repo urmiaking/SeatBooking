@@ -11,14 +11,15 @@ public static class DependencyInjectionExtensions
     {
         public IServiceCollection AddApis()
         {
-            services.AddApiControllers();
-            services.AddSwagger();
-            services.DiscoverServices();
+            services.AddApiControllers()
+                .AddSwagger()
+                .DiscoverServices()
+                .AddRealtime();
 
             return services;
         }
 
-        internal void AddApiControllers()
+        internal IServiceCollection AddApiControllers()
         {
             services
                 .AddControllers()
@@ -28,12 +29,23 @@ public static class DependencyInjectionExtensions
                     options.JsonSerializerOptions.Converters.Add(new JsonStringEnumConverter());
                     options.JsonSerializerOptions.DefaultIgnoreCondition = JsonIgnoreCondition.WhenWritingNull;
                 });
+
+            return services;
         }
 
-        internal void AddSwagger()
+        internal IServiceCollection AddSwagger()
         {
             services.AddEndpointsApiExplorer();
             services.AddSwaggerGen();
+
+            return services;
+        }
+
+        internal IServiceCollection AddRealtime()
+        {
+            services.AddSignalR();
+
+            return services;
         }
     }
 }

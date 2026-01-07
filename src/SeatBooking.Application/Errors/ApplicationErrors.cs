@@ -14,9 +14,9 @@ public static class ApplicationErrors
             code: "Reservation.NotFound",
             description: "رزرو یافت نشد");
 
-        public static Error InvalidState => Error.Conflict(
-            code: "Reservation.InvalidState",
-            description: "رزرو نامعتبر است");
+        public static Error AlreadyPaid => Error.Conflict(
+            code: "Reservation.AlreadyPaid",
+            description: "رزرو قبلاً پرداخت شده است");
 
         public static Error ReserveForbidden => Error.Forbidden(
             code: "Reservation.ReserveForbidden",

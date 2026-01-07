@@ -29,28 +29,13 @@ public sealed class Reservation : EntityBase<ReservationId>
         Status = ReservationStatus.Pending;
     }
 
-    public static Reservation Start(
-        SeatId seatId,
-        ClientId clientId,
-        DateTime createdAtUtc)
-    {
-        return new Reservation(
-            new ReservationId(Guid.NewGuid()),
-            seatId,
-            clientId,
-            createdAtUtc);
-    }
+    public static Reservation Start(SeatId seatId, ClientId clientId, DateTime createdAtUtc)
+        => new(new ReservationId(Guid.NewGuid()), seatId, clientId, createdAtUtc);
 
     public void CompletePayment()
     {
         EnsurePending();
         Status = ReservationStatus.Completed;
-    }
-
-    public void FailPayment()
-    {
-        EnsurePending();
-        Status = ReservationStatus.Failed;
     }
 
     public void Expire(DateTime utcNow, TimeSpan expirationWindow)
