@@ -1,3 +1,9 @@
+@import '../fonts/IRANSANS/IRANSANS-font-face.css';
+
+* {
+    font-family: "IRANSans", "Helvetica", "Arial", sans-serif;
+}
+
 html {
   font-size: 14px;
 }
@@ -28,4 +34,13 @@ body {
 
 .form-floating > .form-control-plaintext:focus::placeholder, .form-floating > .form-control:focus::placeholder {
   text-align: start;
+}
+
+.seat-card {
+    min-height: 58px;
+    text-align: left;
+}
+
+.modal-header {
+    justify-content: space-between; 
 }

@@ -241,7 +241,6 @@ internal sealed class ReservationService(
         await reservationRepository.UpdateRangeAsync(expiredReservations, cancellationToken);
 
         var seatDtoList = mapper.Map<List<GetSeatResponse>>(seats);
-        await notifier.SeatsUpdatedAsync(seatDtoList, cancellationToken);
 
         try
         {
