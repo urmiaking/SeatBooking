@@ -7,7 +7,7 @@ using SeatBooking.Infrastructure.Repositories.Abstractions;
 using SeatBooking.Infrastructure.Specifications.Seats;
 
 namespace SeatBooking.Application.Services;
-
+ 
 [ScopedService]
 internal sealed class SeatService(ISeatRepository repository, IMapper mapper) : ISeatService
 {
