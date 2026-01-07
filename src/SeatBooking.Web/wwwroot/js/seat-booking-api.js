@@ -4,7 +4,8 @@
     const endpoints = {
         seats: "/api/seats",
         startReservation: "/api/reservations/start",
-        processPayment: "/api/reservations/process-payment"
+        processPayment: "/api/reservations/process-payment",
+        resetReservations: "/api/reservations/reset"
     };
 
     function ajaxJson(method, url, body) {
@@ -36,9 +37,14 @@
         });
     }
 
+    function resetReservations() {
+        return ajaxJson("POST", endpoints.resetReservations);
+    }
+
     global.SeatBookingApi = {
         getSeats,
         startReservation,
-        processPayment
+        processPayment,
+        resetReservations
     };
 })(window, jQuery);

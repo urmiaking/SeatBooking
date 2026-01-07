@@ -9,4 +9,5 @@ public interface IReservationService
     Task<ErrorOr<StartReservationResponse>> StartReservationAsync(StartReservationRequest request, CancellationToken cancellationToken = default);
     Task<ErrorOr<ReservationPaymentResponse>> ProcessPaymentAsync(ReservationPaymentRequest request, CancellationToken cancellationToken = default);
     Task ExpirePendingReservationsAsync(CancellationToken cancellationToken = default);
+    Task ResetReservationsAsync(CancellationToken cancellationToken = default);
 }

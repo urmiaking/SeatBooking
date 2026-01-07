@@ -238,6 +238,33 @@
         }
     }
 
+    async function onResetReservationsClicked() {
+        const ok = confirm("همه رزروها حذف می‌شوند و تمام صندلی‌ها آزاد خواهند شد. ادامه می‌دهید؟");
+        if (!ok) return;
+
+        const $btn = $("#btnResetReservations");
+        $btn.prop("disabled", true);
+
+        try {
+            setAlert("info", "در حال ریست رزروها...");
+
+            await global.SeatBookingApi.resetReservations();
+
+            if (global.SeatBookingReservationsStore?.clear) {
+                global.SeatBookingReservationsStore.clear();
+            }
+
+            setAlert("success", "ریست رزروها انجام شد.");
+
+            await refreshSeats();
+        } catch (xhr) {
+            const msg = xhr?.responseJSON?.title || xhr?.statusText || "خطا در ریست رزروها.";
+            setAlert("danger", msg);
+        } finally {
+            $btn.prop("disabled", false);
+        }
+    }
+
     function wireDomEvents() {
         $("#seatsGrid").on("click", "button[data-seat-id]", function () {
             const seatId = $(this).attr("data-seat-id");
@@ -248,6 +275,10 @@
         $("#paymentModal").on("click", "button[data-pay]", function () {
             const outcome = $(this).attr("data-pay");
             onPayClicked(outcome);
+        });
+
+        $("#btnResetReservations").on("click", function () {
+            onResetReservationsClicked();
         });
 
         document.getElementById("paymentModal").addEventListener("hidden.bs.modal", function () {

@@ -256,4 +256,47 @@ internal sealed class ReservationService(
             expiredReservations.Count,
             seats.Count);
     }
+
+    public async Task ResetReservationsAsync(CancellationToken cancellationToken = default)
+    {
+        await using var dbTransaction = await reservationRepository.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+        {
+            try
+            {
+                var reservations = await reservationRepository
+                    .Get(new ReservationsDefaultSpecification())
+                    .ToListAsync(cancellationToken);
+
+                await reservationRepository.DeleteRangeAsync(reservations, cancellationToken);
+
+                var seats = await seatRepository
+                    .Get(new SeatsDefaultSpecification())
+                    .ToListAsync(cancellationToken);
+
+                foreach (var seat in seats) 
+                    seat.Release();
+
+                await seatRepository.UpdateRangeAsync(seats, cancellationToken);
+
+                await dbTransaction.CommitAsync(cancellationToken);
+
+                var seatDtoList = mapper.Map<List<GetSeatResponse>>(seats);
+
+                try
+                {
+                    await notifier.SeatsUpdatedAsync(seatDtoList, cancellationToken);
+                }
+                catch (Exception ex)
+                {
+                    logger.LogWarning(ex, "Failed to notify clients for seats reset");
+                }
+            }
+            catch (Exception e)
+            {
+                logger.LogError(e.Message, e);
+                await dbTransaction.RollbackAsync(cancellationToken);
+                throw;
+            }
+        }
+    }
 }

@@ -21,4 +21,11 @@ public class ReservationsController(IReservationService service) : ApiController
         var response = await service.ProcessPaymentAsync(request, cancellationToken);
         return response.Match(Ok, Problem);
     }
+
+    [HttpPost("reset")]
+    public async Task<IActionResult> ResetReservationsAsync(CancellationToken cancellationToken)
+    {
+        await service.ResetReservationsAsync(cancellationToken);
+        return NoContent();
+    }
 }
