@@ -2,6 +2,7 @@
 using System.Reflection;
 using Mapster;
 using MapsterMapper;
+using SeatBooking.Application.BackgroundServices;
 using SeatBooking.Core.DependencyInjections.Extensions;
 
 namespace SeatBooking.Application.Extensions;
@@ -13,6 +14,7 @@ public static class DependencyInjectionExtensions
         public IServiceCollection AddApplication()
         {
             services.AddMapster();
+            services.AddHostedService<ReservationExpirationBackgroundService>();
             services.DiscoverServices();
 
             return services;

@@ -41,13 +41,16 @@ public sealed class Reservation : EntityBase<ReservationId>
             createdAtUtc);
     }
 
-    public void CompletePayment(bool success)
+    public void CompletePayment()
     {
         EnsurePending();
+        Status = ReservationStatus.Completed;
+    }
 
-        Status = success
-            ? ReservationStatus.Completed
-            : ReservationStatus.Failed;
+    public void FailPayment()
+    {
+        EnsurePending();
+        Status = ReservationStatus.Failed;
     }
 
     public void Expire(DateTime utcNow, TimeSpan expirationWindow)

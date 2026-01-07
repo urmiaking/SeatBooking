@@ -3,4 +3,10 @@ using SeatBooking.Domain.SeatAggregate;
 
 namespace SeatBooking.Infrastructure.Specifications.Seats;
 
-public class SeatsDefaultSpecification : SpecificationBase<Seat>;
+public class SeatsDefaultSpecification : SpecificationBase<Seat>
+{
+    public SeatsDefaultSpecification()
+    {
+        ApplyOrderBy(x => x.Number);
+    }
+}
