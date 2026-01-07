@@ -228,7 +228,7 @@
                 await refreshSeats();
                 setTimeout(closePaymentModal, 700);
             } else {
-                setPaymentAlert("warning", "پرداخت ناموفق بود. می‌توانید دوباره تلاش کنید (تا قبل از پایان زمان رزرو).");
+                setPaymentAlert("warning", "پرداخت ناموفق بود لطفا مجددا امتحان کنید.");
             }
         } catch (xhr) {
             const msg = xhr?.responseJSON?.title || xhr?.statusText || "خطا در انجام پرداخت.";
