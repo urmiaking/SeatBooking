@@ -110,7 +110,7 @@ internal sealed class ReservationService(
     }
 
     public async Task<ErrorOr<ReservationPaymentResponse>> ProcessPaymentAsync(ReservationPaymentRequest request,
-        CancellationToken cancellationToken = default)
+    CancellationToken cancellationToken = default)
     {
         var validationResult = await paymentRequestValidator.ValidateAsync(request, cancellationToken);
         if (!validationResult.IsValid)
@@ -122,7 +122,8 @@ internal sealed class ReservationService(
             return errors;
         }
 
-        await using var dbTransaction = await reservationRepository.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
+        await using var dbTransaction =
+            await reservationRepository.BeginTransactionAsync(IsolationLevel.ReadCommitted, cancellationToken);
         {
             try
             {
@@ -155,6 +156,33 @@ internal sealed class ReservationService(
                 if (seat.Status is not SeatStatus.Pending)
                     return ApplicationErrors.Seats.SeatUnavailable;
 
+                var nowUtc = DateTime.UtcNow;
+                var expirationWindow = TimeSpan.FromMinutes(_settings.BookingTimeoutMinutes);
+
+                // expire if reservation passed expiration window
+                if (nowUtc - reservation.CreatedAtUtc >= expirationWindow)
+                {
+                    reservation.Expire(nowUtc, expirationWindow);
+                    seat.Release();
+
+                    await seatRepository.UpdateAsync(seat, cancellationToken);
+                    await reservationRepository.UpdateAsync(reservation, cancellationToken);
+
+                    await dbTransaction.CommitAsync(cancellationToken);
+
+                    var seatDto = mapper.Map<GetSeatResponse>(seat);
+                    try
+                    {
+                        await notifier.SeatUpdatedAsync(seatDto, cancellationToken);
+                    }
+                    catch (Exception ex)
+                    {
+                        logger.LogWarning(ex, "Failed to notify clients for seat {SeatId}", seatDto.Id);
+                    }
+
+                    return ApplicationErrors.Reservations.Expired;
+                }
+
                 var paymentResult = await paymentService.PayAsync(reservationId, request.PaymentOutcome, cancellationToken);
 
                 if (paymentResult != PaymentStatus.Succeeded)
@@ -168,15 +196,15 @@ internal sealed class ReservationService(
 
                 await dbTransaction.CommitAsync(cancellationToken);
 
-                var seatDto = mapper.Map<GetSeatResponse>(seat);
+                var updatedSeatDto = mapper.Map<GetSeatResponse>(seat);
 
                 try
                 {
-                    await notifier.SeatUpdatedAsync(seatDto, cancellationToken);
+                    await notifier.SeatUpdatedAsync(updatedSeatDto, cancellationToken);
                 }
                 catch (Exception ex)
                 {
-                    logger.LogWarning(ex, "Failed to notify clients for seat {SeatId}", seatDto.Id);
+                    logger.LogWarning(ex, "Failed to notify clients for seat {SeatId}", updatedSeatDto.Id);
                 }
 
                 return new ReservationPaymentResponse(paymentResult);
